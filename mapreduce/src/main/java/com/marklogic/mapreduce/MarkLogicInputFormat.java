@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2017 MarkLogic Corporation
+ * Copyright 2003-2018 MarkLogic Corporation
 
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -106,8 +106,12 @@ extends InputFormat<KEYIN, VALUEIN> implements MarkLogicConstants {
     protected void appendQuery(StringBuilder buf) {
         String ctsQuery = jobConf.get(QUERY_FILTER);
         if (ctsQuery != null) {
+            ctsQuery = ctsQuery.replaceAll("&", "&amp;");
+            ctsQuery = ctsQuery.replaceAll("'", "&apos;");
+            ctsQuery = ctsQuery.replaceAll("&", "&amp;");
+            ctsQuery = ctsQuery.replaceAll("\"", "&quot;");          
             buf.append("\"cts:query(xdmp:unquote('");
-            buf.append(ctsQuery.replaceAll("\"", "&#34;"));
+            buf.append(ctsQuery);
             buf.append("')/*)\"");
         } else if (docSelector != null) {
             buf.append("'");

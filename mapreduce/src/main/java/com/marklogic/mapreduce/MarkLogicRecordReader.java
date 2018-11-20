@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2017 MarkLogic Corporation
+ * Copyright 2003-2018 MarkLogic Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -177,6 +177,8 @@ implements MarkLogicConstants {
     }
     
     protected void buildSrcInSearchQuery(String docExpr, String ctsQuery, StringBuilder buf) {
+        ctsQuery = ctsQuery.replaceAll("&", "&amp;");
+        ctsQuery = ctsQuery.replaceAll("'", "&apos;");
         buf.append("fn:unordered(cts:search(");
         buf.append(docExpr);
         buf.append(",cts:query(xdmp:unquote('");

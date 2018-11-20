@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2017 MarkLogic Corporation
+ * Copyright 2003-2018 MarkLogic Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -541,7 +541,21 @@ public class DatabaseContentReader extends
                         return true;
                     }
                 } catch (RuntimeException e) {
-                    LOG.error("RuntimeException:" + e);
+                    LOG.error("RuntimeException reading " + currentKey + " :" 
+                        + e);
+                    StringBuilder buf = new StringBuilder();
+                    if (hostNames.length > 1) {
+                        buf.append("host names: ");
+                    } else {
+                        buf.append("host name: ");
+                    }
+                    for (int i = 0; i < hostNames.length; i++) {
+                        if (i > 0) {
+                            buf.append(", ");
+                        }
+                        buf.append(hostNames[i]);
+                    }
+                    LOG.info(buf.toString());
                     if (curForest != -1) {
                         if (++retry < maxRetries) {
                             try {
